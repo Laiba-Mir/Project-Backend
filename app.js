@@ -6,6 +6,7 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const config = require("./db/config")
 
 var app = express();
 
@@ -19,13 +20,29 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+
+
+
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+
+
+
+
+
+
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -37,16 +54,4 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-
-mongoose.connect("mongodb://127.0.0.1:27017/Login")
-.then(() => console.log("Connected to Mongo...."))
-.catch((error) => console.log("not connected"));
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
- console.log('Connected to MongoDB');
-});
-
 module.exports = app;
